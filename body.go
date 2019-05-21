@@ -322,6 +322,15 @@ func (body *Body) SetAngularVelocity(angularVelocity float64) {
 	body.w = angularVelocity
 }
 
+func (body *Body) Torque() float64 {
+	return body.t
+}
+
+func (body *Body) SetTorque(t float64) {
+	body.Activate()
+	body.t = t
+}
+
 func (body *Body) SetTransform(p Vector, a float64) {
 	rot := Vector{math.Cos(a), math.Sin(a)}
 	c := body.cog
@@ -472,6 +481,10 @@ func (body *Body) ApplyImpulseAtWorldPoint(impulse, point Vector) {
 
 func (body *Body) ApplyImpulseAtLocalPoint(impulse, point Vector) {
 	body.ApplyImpulseAtWorldPoint(body.transform.Vect(impulse), body.transform.Point(point))
+}
+
+func (body *Body) ApplyTorque(torque float64) {
+	body.t = body.t + torque
 }
 
 func (body *Body) VelocityAtLocalPoint(point Vector) Vector {
